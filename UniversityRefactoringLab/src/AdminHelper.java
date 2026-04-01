@@ -1,16 +1,7 @@
 public class AdminHelper {
 
-    public static boolean validEmail(String email) {
-        if (email == null) {
-            return false;
-        }
-        if (email.contains("@") && email.contains(".")) {
-            return true;
-        }
-        if (email.contains("@")) {
-            return true;
-        }
-        return false;
+    public static boolean isValidEmail(String email) {
+        return email != null && email.contains("@");
     }
 
     public static double calculateLatePenalty(double balance) {

@@ -16,8 +16,9 @@ public class UniversitySystem {
     public double scholarshipRate = 100;
 
     public void enrollStudent(String studentId, String courseCode, String semester, String paymentType) {
-        Student s = null;
-        Course c = null;
+
+        Student s = findStudent(studentId);
+        Course  c = findCourse(courseCode);
 
         for (Student st : students) {
             if (st.id.equals(studentId)) {
@@ -129,7 +130,7 @@ public class UniversitySystem {
         System.out.println("Fee charged: " + fee);
         logs.add("Enrolled " + studentId + " into " + courseCode);
 
-        if (s.email != null && s.email.contains("@")) {
+        if (AdminHelper.isValidEmail(s.email)) {
             System.out.println("Email sent to " + s.email + ": enrolled in " + c.title);
             logs.add("Enrollment email sent");
         } else {
@@ -175,16 +176,8 @@ public class UniversitySystem {
                 else if (grade.equals("D")) points = 1.0;
                 else if (grade.equals("F")) points = 0.0;
 
-                Student s = null;
-                Course c = null;
-
-                for (Student st : students) {
-                    if (st.id.equals(studentId)) s = st;
-                }
-
-                for (Course co : courses) {
-                    if (co.code.equals(courseCode)) c = co;
-                }
+                Student s = findStudent(studentId);
+                Course  c = findCourse(courseCode);
 
                 if (s != null && c != null) {
                     s.totalCompletedCredits += c.creditHours;
@@ -202,7 +195,7 @@ public class UniversitySystem {
                     System.out.println("Updated GPA: " + s.gpa);
                     System.out.println("Updated Status: " + s.status);
 
-                    if (s.email != null && s.email.contains("@")) {
+                    if (s.email != null && AdminHelper.isValidEmail(s.email)) {
                         System.out.println("Email sent to " + s.email + ": grade posted");
                     } else {
                         System.out.println("Could not send grade email");
@@ -213,12 +206,8 @@ public class UniversitySystem {
     }
 
     public void processPayment(String studentId, double amount, String method) {
-        Student s = null;
-        for (Student st : students) {
-            if (st.id.equals(studentId)) {
-                s = st;
-            }
-        }
+        Student s = findStudent(studentId);
+
 
         if (s == null) {
             System.out.println("Student not found");
@@ -252,18 +241,13 @@ public class UniversitySystem {
         System.out.println("Amount accepted: " + amount);
         System.out.println("Remaining balance: " + s.outstandingBalance);
 
-        if (s.email != null && s.email.contains("@")) {
+        if (s.email != null && AdminHelper.isValidEmail(s.email)) {
             System.out.println("Email sent to " + s.email + ": payment received");
         }
     }
 
     public void printTranscript(String studentId) {
-        Student s = null;
-        for (Student st : students) {
-            if (st.id.equals(studentId)) {
-                s = st;
-            }
-        }
+        Student s = findStudent(studentId);
 
         if (s == null) {
             System.out.println("Student not found");
@@ -363,18 +347,12 @@ public class UniversitySystem {
     public void sendWarningLetters() {
         for (Student s : students) {
             if (s.outstandingBalance > 500 || s.status.equals("PROBATION")) {
-                if (s.email != null && s.email.contains("@")) {
-                    System.out.println("Sending warning email to " + s.email);
-                    if (s.outstandingBalance > 500) {
-                        System.out.println("Reason: unpaid balance");
-                    }
-                    if (s.status.equals("PROBATION")) {
-                        System.out.println("Reason: academic probation");
-                    }
-                    logs.add("Warning sent to " + s.id);
+                if (AdminHelper.isValidEmail(s.email)) {
+                    System.out.println("Email sent to " + s.email + ": enrolled in " + c.title);
+                    logs.add("Enrollment email sent");
                 } else {
-                    System.out.println("Could not send warning to " + s.name);
-                    logs.add("Warning failed for " + s.id);
+                    System.out.println("Invalid email");
+                    logs.add("Invalid email for " + s.id);
                 }
             }
         }
