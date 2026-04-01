@@ -70,21 +70,7 @@ public class UniversitySystem {
             return;
         }
 
-        if (s.outstandingBalance > 1000) {
-            System.out.println("Student has unpaid balance");
-            logs.add("Balance issue for " + s.id);
-            return;
-        }
-
-        for (Enrollment e : enrollments) {
-            if (e.studentId.equals(studentId) && e.semester.equals(semester)) {
-                if (e.day.equals(c.day) && e.timeSlot.equals(c.timeSlot)) {
-                    System.out.println("Schedule conflict");
-                    logs.add("Conflict for " + studentId);
-                    return;
-                }
-            }
-        }
+        if (hasScheduleConflict(studentId, semester, s, c)) return;
 
         if (c.prerequisite != null && !c.prerequisite.equals("")) {
             boolean passed = false;
@@ -150,6 +136,30 @@ public class UniversitySystem {
             System.out.println("Invalid email");
             logs.add("Invalid email for " + s.id);
         }
+    }
+
+    private boolean hasScheduleConflict(String studentId, String semester, Student s, Course c) {
+        if (hasUnpaidBalance(s)) return true;
+
+        for (Enrollment e : enrollments) {
+            if (e.studentId.equals(studentId) && e.semester.equals(semester)) {
+                if (e.day.equals(c.day) && e.timeSlot.equals(c.timeSlot)) {
+                    System.out.println("Schedule conflict");
+                    logs.add("Conflict for " + studentId);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean hasUnpaidBalance(Student s) {
+        if (s.outstandingBalance > 1000) {
+            System.out.println("Student has unpaid balance");
+            logs.add("Balance issue for " + s.id);
+            return true;
+        }
+        return false;
     }
 
     public void assignGrade(String studentId, String courseCode, String semester, String grade) {
