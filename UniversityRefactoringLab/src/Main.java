@@ -107,8 +107,8 @@ public class Main {
                 String studentId = scanner.nextLine();
                 System.out.print("Enter Amount: ");
                 double amount = Double.parseDouble(scanner.nextLine());
-                System.out.print("Enter Method (CARD/BANK/CASH): ");
-                String method = scanner.nextLine();
+                System.out.print("Enter Method (CARD/BANK/CASH/INSTALLMENT): ");
+                PaymentMethod method = PaymentMethod.valueOf(scanner.nextLine().trim().toUpperCase());
                 system.processPayment(studentId, amount, method);
 
             } else if (choice == 7) {

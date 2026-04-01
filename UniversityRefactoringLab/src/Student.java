@@ -51,4 +51,9 @@ public class Student {
         gpa = totalGradePoints / totalCompletedCredits;
         status = AcademicStatus.fromGpa(gpa);
     }
+    @Override
+    public String toString() {
+        return id + " | " + name + " | " + department
+                + " | " + status + " | GPA: " + String.format("%.2f", gpa);
+    }
 }
