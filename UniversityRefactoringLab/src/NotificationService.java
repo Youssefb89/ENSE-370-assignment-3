@@ -6,15 +6,17 @@ public class NotificationService {
 
     public void sendEnrollmentConfirmation(Student student, Course course) {
         if (isValidEmail(student.getEmail())) {
-            System.out.println("Email sent to " + student.getEmail() + ": enrolled in " + course.getTitle());
+            System.out.println("Email sent to " + student.getEmail()
+                    + ": enrolled in " + course.getTitle());
         } else {
-            System.out.println("Invalid email – could not send enrollment confirmation.");
+            System.out.println("Invalid email – could not send enrolment confirmation.");
         }
     }
 
     public void sendGradeNotification(Student student, Course course) {
         if (isValidEmail(student.getEmail())) {
-            System.out.println("Email sent to " + student.getEmail() + ": grade posted for " + course.getTitle());
+            System.out.println("Email sent to " + student.getEmail()
+                    + ": grade posted for " + course.getTitle());
         } else {
             System.out.println("Could not send grade email.");
         }
